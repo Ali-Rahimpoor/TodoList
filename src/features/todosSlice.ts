@@ -1,29 +1,51 @@
-import { createSlice,createEntityAdapter } from "@reduxjs/toolkit";
+import { createSlice, createEntityAdapter, type PayloadAction } from "@reduxjs/toolkit";
 import type { Todo } from "../types/Ttodo";
+import type { RootState } from "../app/store";
+import { nanoid } from "@reduxjs/toolkit";
 
-const todosAdapter = createEntityAdapter<Todo>();
+export const todosAdapter = createEntityAdapter<Todo>();
 
+// حالت اولیه با قابلیت hydrate از localStorage
 const initialState = todosAdapter.getInitialState();
 
-const todosSlice = createSlice({
-   name:"todos",
-   initialState,
-   reducers:{
-      todoAdded(state,action){
-         todosAdapter.addOne(state,action.payload);
-      },
-      todoRemoved(state,action){
-         todosAdapter.removeOne(state,action.payload.id);
-      },
-      toggleTodo(state,action){
-         const {id} = action.payload;
-         const existingTodo = state.entities[id];
-         if(existingTodo){
-            existingTodo.completed = !existingTodo.completed;
-         }
+export const todosSlice = createSlice({
+  name: "todos",
+  initialState,
+  reducers: {
+    todoAdded: {
+      reducer: todosAdapter.addOne,
+      prepare: (title: string) => ({
+        payload: {
+          id: nanoid(),
+          title,
+          completed: false,
+        },
+      }),
+    },
+    todoRemoved: todosAdapter.removeOne,
+    todoToggled(state, action: PayloadAction<string>) {
+      const todo = state.entities[action.payload];
+      if (todo) {
+        todo.completed = !todo.completed;
       }
-   }
-})
+    },
+    todosLoaded(state, action: PayloadAction<Todo[]>) {
+      return todosAdapter.setAll(state, action.payload);
+    },
+  },
+});
 
-export const {todoAdded,todoRemoved,toggleTodo} = todosSlice.actions;
+// اکشن‌های صادر شده
+export const { todoAdded, todoRemoved, todoToggled, todosLoaded } = todosSlice.actions;
+
+// سلکتورهای صادر شده
+export const {
+  selectAll,
+  selectById,
+  selectIds,
+} = todosAdapter.getSelectors((state: RootState) => state.todos);
+
+// تابع کمکی برای بارگذاری
+export const loadTodos = (todos: Todo[]) => todosLoaded(todos);
+
 export default todosSlice.reducer;
