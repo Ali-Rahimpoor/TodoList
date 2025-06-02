@@ -1,5 +1,5 @@
-import { useDispatch,useSelector } from "react-redux";
-import { todoToggled,selectAll, } from "../features/todosSlice";
+import { useDispatch} from "react-redux";
+import { todoToggled} from "../features/todosSlice";
 import { todoRemoved } from "../features/todosSlice";
 import { IoTrash } from "react-icons/io5";
 import { usePersistTodos } from "../hooks/usePersistTodos";

@@ -5,7 +5,6 @@ import { nanoid } from "@reduxjs/toolkit";
 
 export const todosAdapter = createEntityAdapter<Todo>();
 
-// حالت اولیه با قابلیت hydrate از localStorage
 const initialState = todosAdapter.getInitialState();
 
 export const todosSlice = createSlice({
@@ -35,17 +34,17 @@ export const todosSlice = createSlice({
   },
 });
 
-// اکشن‌های صادر شده
+
 export const { todoAdded, todoRemoved, todoToggled, todosLoaded } = todosSlice.actions;
 
-// سلکتورهای صادر شده
+
 export const {
   selectAll,
   selectById,
   selectIds,
 } = todosAdapter.getSelectors((state: RootState) => state.todos);
 
-// تابع کمکی برای بارگذاری
+
 export const loadTodos = (todos: Todo[]) => todosLoaded(todos);
 
 export default todosSlice.reducer;
