@@ -18,6 +18,7 @@ export const todosSlice = createSlice({
           id: nanoid(),
           title,
           completed: false,
+          date: new Date()
         },
       }),
     },
