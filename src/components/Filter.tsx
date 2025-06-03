@@ -2,15 +2,14 @@ import { selectFilter, setFilter } from "../features/FilterSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const filteredButtons = [
-   {name:"all",label:'همه',className:"bg-orange-500"},
-   {name:"complete",label:'انجام شده',className:"bg-orange-500"},
-   {name:"active",label:'فعال',className:"bg-orange-500"}
+   {name:"all",label:'همه'},
+   {name:"complete",label:'انجام شده'},
+   {name:"active",label:'فعال'}
 ];
 
 const Filter = ()=>{
    const dispatch = useDispatch();
    const currentFilter = useSelector(selectFilter);
-   console.log(currentFilter);
    const handleFilter = (e: React.MouseEvent<HTMLButtonElement>)=>{
       e.preventDefault();
       dispatch(setFilter(e.currentTarget.name));

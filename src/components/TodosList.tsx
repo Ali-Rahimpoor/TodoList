@@ -3,15 +3,15 @@ import { todoToggled, todoRemoved } from "../features/todosSlice";
 import { IoTrash } from "react-icons/io5";
 import { usePersistTodos } from "../hooks/usePersistTodos";
 import { useMemo, useState } from "react";
-import type { Todo } from "../types/Ttodo";
 import { selectFilteredTodos } from "../features/FilterSlice";
 
 const TodosList = () => {
-  const dispatch = useDispatch();
   usePersistTodos();
+  const dispatch = useDispatch();
+  const filteredTodos = useSelector(selectFilteredTodos); 
   
   const [sortNewestFirst, setSortNewestFirst] = useState(false);
-  const filteredTodos = useSelector(selectFilteredTodos);
+ 
 
   const sortedTodos = useMemo(() => {
     return [...filteredTodos].sort((a, b) => {
