@@ -1,10 +1,11 @@
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { todoToggled} from "../features/todosSlice";
 import { todoRemoved } from "../features/todosSlice";
 import { IoTrash } from "react-icons/io5";
 import { usePersistTodos } from "../hooks/usePersistTodos";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Todo } from "../types/Ttodo";
+import { selectFilteredTodos } from "../features/FilterSlice";
 const TodosList = ()=>{
    const dispatch = useDispatch();
 
@@ -17,39 +18,25 @@ const TodosList = ()=>{
     dispatch(todoToggled(id));
    }
    const checkboxRef = useRef<HTMLInputElement>(null);
-   const sortOldest = [...todos].sort((a,b)=>{
-      return new Date(a.date).getTime() - new Date(b.date).getTime();
-   });
-   const sortNewest = [...todos].sort((a,b)=>{
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-   });
-
-   const [sortedTodos,setSortedTodos] = useState<Todo []>(sortNewest);
    
-   const handleSort = ()=>{
-  const isChecked = checkboxRef.current?.checked;
-      if(isChecked){
-         setSortedTodos(sortNewest);
-      }else{
-         setSortedTodos(sortOldest);
-      }
-   }
-useEffect(() => {
-  const isChecked = checkboxRef.current?.checked;
-  if (isChecked) {
-    setSortedTodos(sortNewest);
-  } else {
-    setSortedTodos(sortOldest);
-  }
-}, [todos]);
+   const filteredTodos = useSelector(selectFilteredTodos);
 
+   const sortedTodos = useMemo(()=>{
+      const isChecked = checkboxRef.current?.checked;
+      return [...todos].sort((a,b)=>{
+         return isChecked
+         ? new Date (b.date).getTime() - new Date (a.date).getTime()
+         : new Date (a.date).getTime() - new Date (b.date).getTime()
+      });
+   },[todos,checkboxRef.current?.checked,]);
 
+   console.log(filteredTodos);
    return(
       <>
       <ul className="font-Dana mt-1 border border-gray-300 h-100 overflow-y-scroll">
          <label htmlFor="sort">مرتب سازی بر اساس جدید ترین ها</label>
-         <input type="checkbox" id="sort" ref={checkboxRef} onChange={handleSort}/>
-  {sortedTodos.map(todo => (
+         <input type="checkbox" id="sort" ref={checkboxRef}/>
+  {filteredTodos.map(todo => (
     <li 
       key={todo.id}
       className={`px-4 py-3 my-1 mx-2 rounded shadow-sm hover:shadow-md transition-shadow flex justify-between cursor-pointer ${todo.completed ? "bg-amber-100 text-gray-400 line-through" :"text-gray-700"}`}
