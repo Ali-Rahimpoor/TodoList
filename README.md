@@ -1,54 +1,37 @@
-# React + TypeScript + Vite
+# Todo List Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Todo List Screenshot](/public/desktop.png)
+![Todo List Screenshot](/public/mobile.png)
 
-Currently, two official plugins are available:
+A modern Todo List application built with React, TypeScript, Tailwind CSS, and Redux Toolkit. This application allows users to manage their tasks efficiently with a clean and responsive interface.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- Add and delete tasks
+- Mark tasks as complete
+- Filter tasks (All, Active, Completed)
+- Responsive design that works on mobile and desktop
+- Persistent state using Redux
+- Modern UI with Tailwind CSS
+- Type-safe with TypeScript
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Technologies Used
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- React 19
+- TypeScript
+- Redux Toolkit (State management)
+- Tailwind CSS (Styling)
+- Vite (Build tool)
+- GitHub Pages (Deployment)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Live Demo
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Check out the live version: [Todo List App](https://Ali-Rahimpoor.github.io/TodoList/)
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Installation
+
+To run this project locally, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Ali-Rahimpoor/TodoList.git
