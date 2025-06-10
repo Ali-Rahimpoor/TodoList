@@ -9,10 +9,10 @@ function App() {
     <header className="bg-zinc-700 py-8">
       <AddTodo/>
     </header>
-    <main className="md:w-[500px] w-[80%] mx-auto">
+    <main className="md:w-[500px] w-[100%] mx-auto">
         <TodosList/>
     </main>
-    <footer className="md:w-[500px] w-[80%] mx-auto">
+    <footer className="md:w-[500px] w-[100%] mx-auto">
       <Filter/>
     </footer>
     </>

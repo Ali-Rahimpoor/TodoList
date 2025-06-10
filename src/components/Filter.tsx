@@ -16,13 +16,13 @@ const Filter = ()=>{
    }
 
    return (
-    <nav className="flex justify-around px-20 border-x border-b p-2 border-gray-300 font-DanaMedium text-gray-700">
+    <nav className="flex justify-around px-1 border-x border-b p-2 border-gray-300 font-DanaMedium text-gray-700">
       {filteredButtons.map((button) => (
         <button
           key={button.name}
           onClick={handleFilter}
           name={button.name}
-          className={`text-sm p-2 rounded-2xl w-20 ${currentFilter === button.name ? "bg-orange-500":"bg-orange-200"}`}
+          className={`text-sm p-2  rounded-2xl w-20 ${currentFilter === button.name ? "bg-orange-500":"bg-orange-200"}`}
         >
           {button.label}
         </button>
