@@ -45,7 +45,7 @@ const TodosList = () => {
         </label>
       </div>
 
-      <ul className="divide-y divide-gray-200 h-140 overflow-y-auto">
+      <ul className="divide-y divide-gray-200 h-130 overflow-y-auto">
         {sortedTodos.map(todo => (
           <li 
             key={todo.id}
