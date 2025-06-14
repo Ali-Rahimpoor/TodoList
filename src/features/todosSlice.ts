@@ -13,10 +13,11 @@ export const todosSlice = createSlice({
   reducers: {
     todoAdded: {
       reducer: todosAdapter.addOne,
-      prepare: (title: string) => ({
+      prepare: ({title,priority}:{title: string; priority: boolean}) => ({
         payload: {
           id: nanoid(),
           title,
+          priority,
           completed: false,
           date: new Date()
         },

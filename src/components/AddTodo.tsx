@@ -3,19 +3,25 @@ import { useDispatch } from "react-redux";
 import { todoAdded } from "../features/todosSlice";
 const AddTodo = ()=>{
    const dispatch = useDispatch();
-   const [text,setText] = useState<string>('');
-
+   const [result,setResult] = useState({
+      title:'',
+      priority:false,
+   });
    const handleChange = (
       e:React.ChangeEvent<HTMLInputElement>)=>{
-      setText(e.target.value);
+      setResult(res=>({...res,title:e.target.value}))
    }
+
+     const handlePriorityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setResult(res => ({ ...res, priority: e.target.checked }));
+  }
 
    const handleSubmit = (
       e:React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
-         if(text.trim()){
+         if(result.title.trim()){
          e.preventDefault();
-         dispatch(todoAdded(text));
-         setText('');
+         dispatch(todoAdded(result));
+         setResult({title:'',priority:false})
       }
    }
    return(
@@ -24,7 +30,7 @@ const AddTodo = ()=>{
   <input
     type="text"
     placeholder="اضافه کردن تسک"
-    value={text}
+    value={result.title}
     onChange={handleChange}
     className="flex-1 px-4 py-2 border border-gray-300 bg-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
   />
@@ -34,6 +40,17 @@ const AddTodo = ()=>{
   >
     ثبت
   </button>
+  <div className="flex items-center gap-x-2">
+  <label htmlFor="priority" className="text-sm">
+    دارای اولیت
+  </label>
+  <input 
+   type="checkbox"
+   checked={result.priority}
+   onChange={handlePriorityChange}
+   id="priority"
+  />
+  </div>
 </form>
       </>
    )

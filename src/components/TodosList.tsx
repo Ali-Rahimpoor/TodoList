@@ -2,24 +2,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { todoToggled, todoRemoved } from "../features/todosSlice";
 import { IoTrash } from "react-icons/io5";
 import { usePersistTodos } from "../hooks/usePersistTodos";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { selectFilteredTodos } from "../features/FilterSlice";
-
 const TodosList = () => {
   usePersistTodos();
   const dispatch = useDispatch();
   const filteredTodos = useSelector(selectFilteredTodos); 
   
   const [sortNewestFirst, setSortNewestFirst] = useState(false);
- 
+  const [priority,setPriority] = useState(false);
 
   const sortedTodos = useMemo(() => {
-    return [...filteredTodos].sort((a, b) => {
-      return sortNewestFirst
-        ? new Date(b.date).getTime() - new Date(a.date).getTime()
-        : new Date(a.date).getTime() - new Date(b.date).getTime();
-    });
-  }, [filteredTodos, sortNewestFirst]);
+  let todos = [...filteredTodos];
+  
+  
+  if (priority) {
+    todos = todos.filter(todo => todo.priority === true);
+  }
+  
+  return todos.sort((a, b) => {
+    return sortNewestFirst
+      ? new Date(b.date).getTime() - new Date(a.date).getTime()
+      : new Date(a.date).getTime() - new Date(b.date).getTime();
+  });
+}, [filteredTodos, sortNewestFirst, priority]);
 
   const handleDelete = (id: string) => {
     dispatch(todoRemoved(id));
@@ -28,6 +34,11 @@ const TodosList = () => {
   const handleToggle = (id: string) => {
     dispatch(todoToggled(id));
   };
+
+  useEffect(()=>{
+    console.log(sortedTodos)
+  },[sortedTodos])
+
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
@@ -43,6 +54,16 @@ const TodosList = () => {
           <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
           <span className="mr-2 text-sm font-Dana text-gray-600">جدیدترین ها</span>
         </label>
+          <label className="inline-flex items-center cursor-pointer">
+          <input 
+            type="checkbox" 
+            className="sr-only peer"
+            checked={priority}
+            onChange={() => setPriority(!priority)}
+          />
+          <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+          <span className="mr-2 text-sm font-Dana text-gray-600">بر اساس اولیت</span>
+        </label>
       </div>
 
       <ul className="divide-y divide-gray-200 h-130 overflow-y-auto">
@@ -50,7 +71,7 @@ const TodosList = () => {
           <li 
             key={todo.id}
             className={`px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer flex items-center justify-between ${
-              todo.completed ? "bg-amber-50" : "bg-white"
+              todo.priority ? "bg-amber-50" : "bg-white"
             }`}
             onClick={() => handleToggle(todo.id)}
           >
@@ -74,6 +95,7 @@ const TodosList = () => {
                     minute: '2-digit'
                   })}
                 </span>
+                { todo.priority ? <span className={`text-xs mr-5 text-gray-400 font-Dana`} >دارای اولیت</span> : null}
               </div>
             </div>
             
